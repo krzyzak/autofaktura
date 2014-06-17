@@ -17,6 +17,44 @@ class InfaktAPI
     invoice
   end
 
+  def number
+    self.class.get("/invoices/next_number.json?kind=vat", {headers: headers})["next_number"]
+  end
+
+  def bank_account
+    accounts = self.class.get("/bank_accounts", {headers: headers})
+    {
+      number: accounts["entities"][0]["account_number"],
+      name: accounts["entities"][0]["bank_name"]
+    }
+  end
+
+  def send(invoice)
+    options = {headers: headers, body: deliver_invoice_body}
+    self.class.post("/invoices/#{invoice.id}/deliver_via_email", options)
+  end
+  private
+  def headers
+    {"X-inFakt-ApiKey" => ENV["INFAKT_API_KEY"]}
+  end
+
+  def service
+    {
+      name: ENV["SERVICE_NAME"],
+      tax_symbol: 23,
+      quantity: salary.computed_quantity,
+      unit_net_price: salary.hour_rate * 100
+    }
+  end
+
+  def deliver_invoice_body
+    {
+      print_type: :original,
+      allow_correction: true,
+      recipient: ENV["INFAKT_CLIENT_EMAIL"]
+    }
+  end
+
   def invoice_body(invoice_date:, sale_date:, kind:)
     {
       invoice: {
@@ -31,31 +69,6 @@ class InfaktAPI
         client_id: ENV["INFAKT_CLIENT_ID"],
         services: [service]
       }
-    }
-  end
-
-  def number
-    self.class.get("/invoices/next_number.json?kind=vat", {headers: headers})["next_number"]
-  end
-
-  def bank_account
-    accounts = self.class.get("/bank_accounts", {headers: headers})
-    {
-      number: accounts["entities"][0]["account_number"],
-      name: accounts["entities"][0]["bank_name"]
-    }
-  end
-  private
-  def headers
-    {"X-inFakt-ApiKey" => ENV["INFAKT_API_KEY"]}
-  end
-
-  def service
-    {
-      name: ENV["SERVICE_NAME"],
-      tax_symbol: 23,
-      quantity: salary.computed_quantity,
-      unit_net_price: salary.hour_rate * 100
     }
   end
 end

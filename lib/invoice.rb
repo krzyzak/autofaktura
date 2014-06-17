@@ -3,6 +3,10 @@ class Invoice
     @data = data
   end
 
+  def id
+    @data["id"]
+  end
+
   def sale_date
     @data["sale_date"]
   end
