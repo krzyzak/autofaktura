@@ -11,8 +11,7 @@ module Autofaktura
         create_invoice!
       end
       display_invoice
-      confirm_invoice
-      send_invoice
+      send_invoice if confirm_invoice
     end
 
     def display_overview
@@ -56,7 +55,7 @@ module Autofaktura
     end
 
     def confirm_invoice
-      bool_question("Wysłać Fakturę do klienta? (Y/n)")
+      bool_question("Wysłać Fakturę do klienta? (Y/n)") unless create_draft?
     end
 
     def create_draft?
