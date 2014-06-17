@@ -25,7 +25,7 @@ Configuration is pretty straightforward – just edit your ```.env``` file.
 Here are some options which might not be clear:
 * ```INFAKT_CLIENT_EMAIL``` – Clients’ default email will be used, unless you specify other here.
 * ```NET_BONUS=0``` – If you have any constant bonus (perhaps base salary?), which you want to apply to invoice before taxation, put it here.
-* GROSS_BONUS=0``` – If you have any constant bonus, which is already calculated after taxation, put it here.
+* ```GROSS_BONUS=0``` – If you have any constant bonus, which is already calculated after taxation, put it here.
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/road_runner/fork )
