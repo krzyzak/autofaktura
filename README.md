@@ -14,7 +14,8 @@ If you wish, there’s also way to automatically send such invoice to your contr
 
 ## Interface 
 Autofaktura has very simple CLI interface. It uses smart defaults, so it tries to guess all dates needed to generate invoice.
-On the other hand, it doesn’t try to be too smart, so your confirmation is always required to generate&send invoice.
+On the other hand, it doesn’t try to be too smart, so your confirmation is always required to generate and send invoice.
+
 ![cli interface](http://cl.ly/image/3C2O1q0g3841/autofaktura.png "CLI interface")
 
 
@@ -24,7 +25,7 @@ Configuration is pretty straightforward – just edit your ```.env``` file.
 Here are some options which might not be clear:
 * ```INFAKT_CLIENT_EMAIL``` – Clients’ default email will be used, unless you specify other here.
 * ```NET_BONUS=0``` – If you have any constant bonus (perhaps base salary?), which you want to apply to invoice before taxation, put it here.
-* GROSS_BONUS=0``` – If you have any constant bonus, which is already calculated after taxation, put it here.
+* ```GROSS_BONUS=0``` – If you have any constant bonus, which is already calculated after taxation, put it here.
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/road_runner/fork )
