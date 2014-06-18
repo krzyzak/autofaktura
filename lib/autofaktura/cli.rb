@@ -16,17 +16,17 @@ module Autofaktura
 
     def display_overview
       @overview_table ||= Terminal::Table.new do |t|
-        t << ["Liczba harvestocoinów", report.total]
-        t << ["Liczba harvestocoinów (z bonusami)", salary.computed_quantity]
+        t << ["Liczba harvestocoinów".bold, report.total]
+        t << ["Liczba harvestocoinów (z bonusami)".bold, salary.computed_quantity]
         t << :separator
-        t << ["Stawka godzinowa", salary.hour_rate]
+        t << ["Stawka godzinowa".bold, salary.hour_rate]
         t << :separator
-        t << ["Bonusy netto", salary.net_bonus]
-        t << ["Bonusy brutto", salary.gross_bonus]
-        t << ["Bonusy w harvestocoinach", (salary.computed_quantity - report.total).round(2)]
+        t << ["Bonusy netto".bold, salary.net_bonus]
+        t << ["Bonusy brutto".bold, salary.gross_bonus]
+        t << ["Bonusy w harvestocoinach".bold, (salary.computed_quantity - report.total).round(2)]
         t << :separator
-        t << ["Suma netto", salary.net]
-        t << ["Suma brutto", salary.gross]
+        t << ["Suma netto".bold.red, salary.net.to_s.red]
+        t << ["Suma brutto".bold.green, salary.gross.to_s.green]
       end
 
       puts @overview_table
@@ -34,12 +34,12 @@ module Autofaktura
 
     def display_invoice
       @invoice_table ||= Terminal::Table.new do |t|
-        t << ["Numer faktury:", invoice.number]
+        t << ["Numer faktury:".bold, invoice.number]
         t << ["Data wystawienia:", invoice.invoice_date]
         t << ["Data sprzedaży:", invoice.sale_date]
-        t << ["Wartość netto:", invoice.net]
-        t << ["Kwota VAT:", invoice.vat]
-        t << ["Wartość brutto:", invoice.gross]
+        t << ["Wartość netto:".bold.red, invoice.net.red]
+        t << ["Kwota VAT:".bold.yellow, invoice.vat.yellow]
+        t << ["Wartość brutto:".bold.green, invoice.gross.green]
       end
 
       puts @invoice_table
@@ -75,7 +75,7 @@ module Autofaktura
     end
     private
     def bool_question(question)
-      ["Y", "y", "\r"].include?(ask(question){|q| q.echo = false; q.character = true })
+      ["Y", "y", "\r"].include?(ask(question){|q| q.echo = false; q.character = true; q.default = "Y" })
     end
 
     def from
