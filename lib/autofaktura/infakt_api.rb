@@ -13,7 +13,7 @@ module Autofaktura
       body = invoice_body(invoice_date: invoice_date, sale_date: sale_date, kind: kind)
       options = {headers: headers, body: body}
 
-      invoice = self.class.post("/invoices", options)
+      invoice = self.class.post("/invoices.json", options)
       raise invoice.parsed_response.inspect unless invoice.code == 201
       invoice
     end
@@ -23,7 +23,7 @@ module Autofaktura
     end
 
     def bank_account
-      accounts = self.class.get("/bank_accounts", {headers: headers})
+      accounts = self.class.get("/bank_accounts.json", {headers: headers})
       {
         number: accounts["entities"][0]["account_number"],
         name: accounts["entities"][0]["bank_name"]
@@ -32,7 +32,7 @@ module Autofaktura
 
     def send(invoice)
       options = {headers: headers, body: deliver_invoice_body}
-      self.class.post("/invoices/#{invoice.id}/deliver_via_email", options)
+      self.class.post("/invoices/#{invoice.id}/deliver_via_email.json", options)
     end
     private
     def headers
