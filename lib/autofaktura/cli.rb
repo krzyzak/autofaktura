@@ -79,11 +79,11 @@ module Autofaktura
     end
 
     def from
-      @from ||= ask("Start:", Date){|value| value.default = Date.today.prev_month.beginning_of_month.to_s }
+      @from ||= ask("Start:", Date){|value| value.default = default_from_date.to_s }
     end
 
     def to
-      @to ||= ask("Koniec:", Date){|value| value.default = Date.today.prev_month.end_of_month.to_s }
+      @to ||= ask("Koniec:", Date){|value| value.default = default_to_date.to_s }
     end
 
     def sale_date
@@ -91,7 +91,43 @@ module Autofaktura
     end
 
     def invoice_date
-      @invoice_date ||= ask("Data wystawienia faktury:", Date) {|value| value.default = Date.today.prev_month.end_of_month.to_s }
+      @invoice_date ||= ask("Data wystawienia faktury:", Date) {|value| value.default = default_invoice_date.to_s }
+    end
+
+    def first_half_of_month?
+      Date.today.day.to_f / Date.today.end_of_month.day.to_f < 0.5
+    end
+
+    def default_from_date
+      first_half_of_month? ? beginning_of_previous_month : beginning_of_month
+    end
+
+    def default_to_date
+      first_half_of_month? ? end_of_previous_month : end_of_month
+    end
+
+    def default_invoice_date
+      first_half_of_month? ? end_of_previous_month : today
+    end
+
+    def beginning_of_month
+      today.beginning_of_month
+    end
+
+    def beginning_of_previous_month
+      today.prev_month.beginning_of_month
+    end
+
+    def end_of_month
+      today.end_of_month
+    end
+
+    def end_of_previous_month
+      today.prev_month.end_of_month
+    end
+
+    def today
+      Date.today
     end
 
     def report
